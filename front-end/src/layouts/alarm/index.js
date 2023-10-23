@@ -89,7 +89,7 @@ function Alarm() {
       })
       .catch((error) => {
         console.log(error);
-        navigate('/authentication/sign-in');
+      //  navigate('/authentication/sign-in');
       });
   };
 
