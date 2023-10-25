@@ -1,0 +1,35 @@
+spring :
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+  datasource:
+    hikari:
+      maximum-pool-size: 4
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/sns;MODE=PostgreSQL;
+    username: sa
+    password:
+
+jwt:
+  secret-key: sns-application-2023-test.secret-key
+  # 30 days
+  token.expired-time-ms: 2592000000
+
+  # Logging
+  logging:
+    level:
+      org.hibernate.type.descriptor.sql: trace
+#      org.hibernate.type: trace
+#      org.hibernate.SQL: debug
+
