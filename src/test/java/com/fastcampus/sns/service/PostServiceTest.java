@@ -67,7 +67,7 @@ public class PostServiceTest {
         Integer postId = 1;
 
         //Mocking
-        PostEntity postEntity = PostEntityFixture.get(userName, postId);
+        PostEntity postEntity = PostEntityFixture.get(userName, postId,1);
         UserEntity userEntity = postEntity.getUser();
 
         when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(userEntity));
@@ -84,7 +84,7 @@ public class PostServiceTest {
         Integer postId = 1;
 
         //Mocking
-        PostEntity postEntity = PostEntityFixture.get(userName, postId);
+        PostEntity postEntity = PostEntityFixture.get(userName, postId,1);
         UserEntity userEntity = postEntity.getUser();
 
         when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(userEntity));
@@ -102,11 +102,11 @@ public class PostServiceTest {
         Integer postId = 1;
 
         //Mocking
-        PostEntity postEntity = PostEntityFixture.get(userName, postId);
-        UserEntity writer = UserEntityFixture.get("userName1", "password");
+        PostEntity postEntity = PostEntityFixture.get(userName, postId, 1); //현재 유저
+        UserEntity writer = UserEntityFixture.get("userName1", "password",2); //다른 유저
 
-        when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(writer));
-        when(postEntityRepository.findById(postId)).thenReturn(Optional.of(postEntity));
+        when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(writer)); //현재 유저로 find 했는데 다른 유저로 리턴
+        when(postEntityRepository.findById(postId)).thenReturn(Optional.of(postEntity)); //빈 Post를 리턴
 
         SnsApplicationException e = Assertions.assertThrows(SnsApplicationException.class, ()->postService.modify(title, body, userName, postId));
         Assertions.assertEquals(ErrorCode.INVALID_PERMISSION, e.getErrorCode());

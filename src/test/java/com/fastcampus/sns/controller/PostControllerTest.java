@@ -100,7 +100,7 @@ public class PostControllerTest {
                         // TODO : 리퀘스트 바디 추가
                         .content(objectMapper.writeValueAsBytes(new PostModifyRequest(title, body)))
                 ).andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
