@@ -52,4 +52,20 @@ public class PostService {
         return Post.fromEntity(postEntityRepository.saveAndFlush(postEntity));
 
     }
+    @Transactional
+    public void delete(String userName, Integer postId) {
+        //user find
+        UserEntity userEntity = userEntityRepository.findByUserName(userName)
+                .orElseThrow(()->new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s is not founded", userName)));
+        //post exist
+        PostEntity postEntity = postEntityRepository.findById(postId).orElseThrow(() ->
+                new SnsApplicationException(ErrorCode.POST_NOT_FOUND, String.format("%s is not founded", postId)));
+
+        //post permission check
+        if(postEntity.getUser() != userEntity) {
+            throw new SnsApplicationException(ErrorCode.INVALID_PERMISSION, String.format("%s has no permission with %s", userName, postId));
+        }
+
+        postEntityRepository.delete(postEntity);
+    }
 }
